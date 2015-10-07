@@ -11,10 +11,7 @@ public class Bank {
     private String name, inp;
     private final ArrayList<Kund> userList;
     private Scanner scanner = new Scanner(System.in);
-    private boolean loop;
-
-    //idé för inloggad
-    private Kund onlineUser;
+    private Kund currentUser = null;
 
     /**
      * @param args the command line arguments
@@ -35,25 +32,53 @@ public class Bank {
     private void start(){
         System.out.println("Välkommen till " + name);
 
-        loop = true;        // loop activated
-        while (loop) {
-            System.out.printf("Vad vill du göra? %n" +
-                    "1. Logga in %n" +
-                    "2. Skapa ny användare %n" +
-                    "3. Avsluta %n");
-            inp = scanner.next();
-            switch (inp) {
-                case "1":
-                    login();
-                    break;
-                case "2":
-                    createUser();
-                    break;
-                case "3":
-                    System.exit(0);
-                default:
-                    System.out.println("1 - 3 Tack!");
-                    break;
+        while(true) {       // main loop
+            while (currentUser == null) {
+                System.out.printf("Vad vill du göra? %n" +
+                        "1. Logga in %n" +
+                        "2. Skapa ny användare %n" +
+                        "3. Avsluta %n");
+                inp = scanner.next();
+                switch (inp) {
+                    case "1":
+                        login();
+                        break;
+                    case "2":
+                        createUser();
+                        break;
+                    case "3":
+                        System.exit(0);
+                    default:
+                        System.out.println("1 - 3 Tack!");
+                        break;
+                }
+            }
+            while (currentUser != null) {
+                System.out.printf("Vad vill du göra? %n" +
+                        "1. Lista konton %n" +
+                        "2. Insättning %n" +
+                        "3. Uttag %n" +
+                        "4. Logga ut%n");
+                inp = scanner.next();
+                switch (inp) {
+                    case "1":
+                        // lista konton
+                        break;
+                    case "2":
+                        // insättning
+                        break;
+                    case "3":
+                        // uttag
+                        break;
+                    case "4":
+                        // log out
+                        currentUser = null;
+                        break;
+                    default:
+                        System.out.println("1 - 4 Tack!\n");
+                        break;
+                }
+
             }
         }
     }
@@ -67,45 +92,14 @@ public class Bank {
             for (int i = 0; i < userList.size(); i++){
                 tmpKund = userList.get(i);
                 if (tmpKund.getPnr().equals(inp)){
-                    onlineUser = tmpKund;
-                    loop = false;       // deactivate loop from start(), successful login
+                    currentUser = tmpKund;
                 }
             }
-            System.out.println("Välkommen " + onlineUser.getPnr() + "\n");     // Success
-            loggedIn();
+            System.out.println("Välkommen " + currentUser.getPnr() + "\n");     // Success
+
         }
         else{
             System.out.println("Fel! Försök igen!\n");
-        }
-    }
-
-    private void loggedIn(){
-        loop = true;
-        while(loop){
-            System.out.printf("Vad vill du göra? %n" +
-                    "1. Lista konton %n" +
-                    "2. Insättning %n" +
-                    "3. Uttag %n" +
-                    "4. Logga ut%n");
-            inp = scanner.next();
-            switch (inp) {
-                case "1":
-                    // lista konton
-                    break;
-                case "2":
-                    // insättning
-                    break;
-                case "3":
-                    // uttag
-                    break;
-                case "4":
-                    // log out
-                    System.exit(0);
-                default:
-                    System.out.println("1 - 4 Tack!\n");
-                    break;
-            }
-
         }
     }
     
