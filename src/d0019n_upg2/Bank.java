@@ -8,7 +8,7 @@ import java.util.Scanner;
  * @author Filip & Josef
  */
 public class Bank {
-    private String name, inp;
+    private String name, inp, pnr;
     private final ArrayList<Kund> userList;
     private Scanner scanner = new Scanner(System.in);
 
@@ -40,6 +40,7 @@ public class Bank {
                 case "1":
                     break;
                 case "2":
+                    createUser();
                     break;
                 case "3":
                     System.exit(0);
@@ -56,12 +57,15 @@ public class Bank {
         return userExist(pnr);
     }*/
     
-    private void createUser(String pnr){        
+    private void createUser(){
         //TODO kolla om det finns användare med samma pnr
-        if (luhn(pnr) && userExist(pnr)){
-            Kund user = new Kund(pnr);
-            userList.add(user);
-        }
+        System.out.println("Personnummer: (10 siffror)");
+        pnr = scanner.next();
+//        if (luhn(pnr) && userExist(pnr)){
+//            Kund user = new Kund(pnr);
+//            userList.add(user);
+//        }
+        System.out.println(luhn(pnr));
     }
     
     private boolean userExist(String pnr){
