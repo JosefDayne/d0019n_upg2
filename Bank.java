@@ -15,7 +15,7 @@ public class Bank {
      */
     public static void main(String[] args) {
         Bank bank = new Bank("Nordbanken");
-//        bank.start();
+        bank.start();
         bank.createUser("9612317199");
         //bank.createUser("9401213716");
     }
