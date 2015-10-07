@@ -1,4 +1,4 @@
-package bank;
+package d0019n_upg2;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -18,7 +18,6 @@ public class Bank {
     public static void main(String[] args) {
         Bank bank = new Bank("Nordbanken");
         bank.start();
-        System.out.println("skitprogram");
         //testfunktioner
         //bank.createUser("9612317199");
         //bank.createUser("9401213716");
