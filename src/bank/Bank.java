@@ -1,22 +1,26 @@
 package bank;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
- * @author Filip
+ * @author Filip & Josef
  */
 public class Bank {
-    private String name;
+    private String name, inp;
     private final ArrayList<Kund> userList;
-    
+    private Scanner scanner = new Scanner(System.in);
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         Bank bank = new Bank("Nordbanken");
         bank.start();
-        bank.createUser("9612317199");
+        System.out.println("skitprogram");
+        //testfunktioner
+        //bank.createUser("9612317199");
         //bank.createUser("9401213716");
     }
     
@@ -28,10 +32,20 @@ public class Bank {
     private void start(){
         System.out.println("Välkommen till " + name);
         while(true){
-            System.out.println("Vad vill du göra?\n"
-                    + "1. Logga in\n"
-                    + "2. Skapa ny användare\n");
-            break;
+            System.out.printf("Vad vill du göra? %n",
+                    "1. Logga in %n",
+                    "2. Skapa ny användare %n",
+                    "3. Avsluta %n");
+            inp = scanner.next();
+            if (inp.equals("1")){
+                //do login stuff
+            }else if(inp.equals("2")){
+                //do create user stuff
+            }else if(inp.equals("3")){
+                System.exit(0);
+            }else{
+                System.out.println("Försök igen");
+            }
         }
     }
         
