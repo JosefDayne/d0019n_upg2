@@ -52,7 +52,7 @@ public class Bank {
                 case "3":
                     System.exit(0);
                 default:
-                    System.out.println("Försök igen");
+                    System.out.println("1 - 3 Tack!");
                     break;
             }
         }
@@ -71,8 +71,11 @@ public class Bank {
                     loop = false;       // deactivate loop from start(), successful login
                 }
             }
-            System.out.println("Välkommen " + onlineUser.getPnr());     // Success
+            System.out.println("Välkommen " + onlineUser.getPnr() + "\n");     // Success
             loggedIn();
+        }
+        else{
+            System.out.println("Fel! Försök igen!\n");
         }
     }
 
@@ -97,9 +100,9 @@ public class Bank {
                     break;
                 case "4":
                     // log out
-                    break;
+                    System.exit(0);
                 default:
-                    System.out.println("Försök igen");
+                    System.out.println("1 - 4 Tack!\n");
                     break;
             }
 
@@ -113,7 +116,10 @@ public class Bank {
         if (luhn(inp) && !userExist(inp)){
             Kund user = new Kund(inp);
             userList.add(user);
-            System.out.println("Succes, new user added");
+            System.out.println("Ny användare tillagd\n");
+        }
+        else{
+            System.out.println("Fel, Försök igen\n");
         }
     }
     
@@ -144,14 +150,14 @@ public class Bank {
                 }
             }else{
                 pnrList.add(tmp);
-            }            
-        }        
+            }
+        }
         int result = 0;
         for (int i: pnrList){
             result += i;
-        }   
+        }
         result = 10-result%10;                  // Result = next ten - result, for example 50-41 = 9;
-        return (result == ctrlNum);            
+        return (result == ctrlNum);
     }
     
     
