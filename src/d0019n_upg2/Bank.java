@@ -8,9 +8,13 @@ import java.util.Scanner;
  * @author Filip & Josef
  */
 public class Bank {
-    private String name, inp, pnr;
+    private String name, inp;
     private final ArrayList<Kund> userList;
     private Scanner scanner = new Scanner(System.in);
+    private boolean loop;
+
+    //idé för inloggad
+    private Kund onlineUser;
 
     /**
      * @param args the command line arguments
@@ -30,14 +34,17 @@ public class Bank {
     
     private void start(){
         System.out.println("Välkommen till " + name);
-        while(true){
-            System.out.printf("Vad vill du göra? %n"+
-                    "1. Logga in %n"+
-                    "2. Skapa ny användare %n"+
+
+        loop = true;        // loop activated
+        while (loop) {
+            System.out.printf("Vad vill du göra? %n" +
+                    "1. Logga in %n" +
+                    "2. Skapa ny användare %n" +
                     "3. Avsluta %n");
             inp = scanner.next();
             switch (inp) {
                 case "1":
+                    login();
                     break;
                 case "2":
                     createUser();
@@ -51,21 +58,63 @@ public class Bank {
         }
     }
         
-    /*
-    // Onödig när vi inte har pw
-    private boolean login(String pnr){
-        return userExist(pnr);
-    }*/
+
+    private void login(){
+        Kund tmpKund;
+        System.out.println("Personnummer: (10 siffror)");
+        inp = scanner.next();
+        if (userExist(inp)){
+            for (int i = 0; i < userList.size(); i++){
+                tmpKund = userList.get(i);
+                if (tmpKund.getPnr().equals(inp)){
+                    onlineUser = tmpKund;
+                    loop = false;       // deactivate loop from start(), successful login
+                }
+            }
+            System.out.println("Välkommen " + onlineUser.getPnr());     // Success
+            loggedIn();
+        }
+    }
+
+    private void loggedIn(){
+        loop = true;
+        while(loop){
+            System.out.printf("Vad vill du göra? %n" +
+                    "1. Lista konton %n" +
+                    "2. Insättning %n" +
+                    "3. Uttag %n" +
+                    "4. Logga ut%n");
+            inp = scanner.next();
+            switch (inp) {
+                case "1":
+                    // lista konton
+                    break;
+                case "2":
+                    // insättning
+                    break;
+                case "3":
+                    // uttag
+                    break;
+                case "4":
+                    // log out
+                    break;
+                default:
+                    System.out.println("Försök igen");
+                    break;
+            }
+
+        }
+    }
     
     private void createUser(){
         //TODO kolla om det finns användare med samma pnr
         System.out.println("Personnummer: (10 siffror)");
-        pnr = scanner.next();
-//        if (luhn(pnr) && userExist(pnr)){
-//            Kund user = new Kund(pnr);
-//            userList.add(user);
-//        }
-        System.out.println(luhn(pnr));
+        inp = scanner.next();
+        if (luhn(inp) && !userExist(inp)){
+            Kund user = new Kund(inp);
+            userList.add(user);
+            System.out.println("Succes, new user added");
+        }
     }
     
     private boolean userExist(String pnr){
