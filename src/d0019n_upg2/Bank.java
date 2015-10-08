@@ -8,11 +8,11 @@ import java.util.Scanner;
  * @author Filip & Josef
  */
 public class Bank {
-    private String name, inp;
+    private String name, inp;                                      // name = namn på banken (onödigt), inp = variabel för input från användaren
     private final ArrayList<Kund> userList;
-    private Scanner scanner = new Scanner(System.in);
-    private Kund tmpUser, currentUser = null, bankir = new Kund("0000000000");
-    private Konto tmpKonto;
+    private Scanner scanner = new Scanner(System.in);              // input från användaren
+    private Kund tmpUser, currentUser = null, bankir = new Kund("0000000000");      // temp (läs under), currentUser är inloggade användaren
+    private Konto tmpKonto;                 // temp för att komma åt rätt konto från listan
 
     //TODO massor
 
@@ -23,11 +23,11 @@ public class Bank {
         Bank bank = new Bank("Nordbanken");
         bank.start();
         //testfunktioner
-        //bank.createUser("9612317199");
-        //bank.createUser("9401213716");
+        //bank.createUser();
+        //bank.createUser();
     }
-    
-    public Bank(String name){
+
+    public Bank(String name){               // konstruktor
         this.name = name;
         userList = new ArrayList<>();
     }
@@ -36,29 +36,29 @@ public class Bank {
         System.out.println("Välkommen till " + name);
 
         while(true) {       // main loop
-            while (currentUser == null) {
+            while (currentUser == null) {               // loopar så länge currentUser är null, dvs ingen inloggad
                 System.out.printf("Vad vill du göra? %n" +
                         "1. Logga in %n" +
                         "2. Avsluta %n");
-                inp = scanner.next();
+                inp = scanner.next();              // tar input från användaren
                 switch (inp) {
                     case "1":
                         login();
                         break;
                     case "2":
-                        System.exit(0);
+                        System.exit(0);         // stänger av programmet
                     default:
                         System.out.println("1 - 2 Tack!");
                         break;
                 }
             }
-            while (currentUser != null) {
+            while (currentUser != null) {           // när currentUser inte är null, dvs någon är inloggad
                 System.out.printf("Vad vill du göra? %n" +
                         "1. Lista konton %n" +
                         "2. Insättning %n" +
                         "3. Uttag %n" +
                         "4. Logga ut%n");
-                inp = scanner.next();
+                inp = scanner.next();           // uppdaterar input
                 switch (inp) {
                     case "1":
                         // lista konton
@@ -72,7 +72,7 @@ public class Bank {
                     case "4":
                         // log out
                         System.out.println("Välkommen åter");
-                        currentUser = null;
+                        currentUser = null;             // logga ut
                         break;
                     default:
                         System.out.println("1 - 4 Tack!\n");
@@ -85,30 +85,29 @@ public class Bank {
         
 
     private void login(){
-        Kund tmpKund;
         System.out.println("Personnummer: (10 siffror)");
         inp = scanner.next();
-        if (inp.equals("0000000000")){
+        if (inp.equals("bankir")){      // bankir som pnr = login som bankir, inget pw (säker bank)
             bankir();
         }
-        else if (userExist(inp)){
-            for (int i = 0; i < userList.size(); i++){
-                tmpKund = userList.get(i);
-                if (tmpKund.getPnr().equals(inp)){
-                    currentUser = tmpKund;
+        else if (userExist(inp)){       // Om det inte är bakir kollar den ifall det finns någon kund/användare med det personnumret
+            for (int i = 0; i < userList.size(); i++){  // går igenom hela listan, inga problem här
+                tmpUser = userList.get(i);              // Pekare till varje objekt är sparat i listan och pekaren sparas till tmpUser så vi kommer åt listan inne i dem
+                if (tmpUser.getPnr().equals(inp)){      // currentUser blir samma som tmpUser om pnr var lika.
+                    currentUser = tmpUser;
                 }
             }
             System.out.println("Välkommen " + currentUser.getPnr() + "\n");     // Success
 
         }
-        else{
+        else{                                           // varken bankir eller användare som finns
             System.out.println("Fel! Försök igen!\n");
         }
     }
 
     private void bankir(){
         currentUser = bankir;
-        while(currentUser!=null){
+        while(currentUser!=null){                   // inga konstigheter? Samma som förut
             System.out.printf("Vad vill du göra? %n" +
                     "1. Lägg till kunder%n" +
                     "2. Lägg till konton %n" +
@@ -147,10 +146,10 @@ public class Bank {
 
     private void createUser(){
         System.out.println("Personnummer: (10 siffror)");
-        inp = scanner.next();
-        if (luhn(inp) && !userExist(inp)){
-            tmpUser = new Kund(inp);
-            userList.add(tmpUser);
+        inp = scanner.next();                           // uppdaterar input
+        if (luhn(inp) && !userExist(inp)){              // om luhn är OK och det inte finns någon användare med
+            tmpUser = new Kund(inp);                    // Skapar en ny Kund med personnumret och
+            userList.add(tmpUser);                      // sparar den till listan
             System.out.println("Ny användare tillagd\n");
         }
         else{
@@ -160,12 +159,12 @@ public class Bank {
 
     private void createKonto(){
         System.out.println("Var vänlig ange kundens personnummer (10 siffror) ");
-        inp = scanner.next();
+        inp = scanner.next();                                       // uppdaterar input så programmet vet vilken användare som ska få nytt konto
         if (userExist(inp)){
-            //TODO Kolla om konto existerar med samma nummer
+            //TODO Kolla om konto existerar med samma nummer        // kanske kontoExist() för att kolla(?)
             System.out.println("Var vänlig ange kontonummer ");
-            inp = scanner.next();
-            tmpKonto = new Konto(inp);
+            inp = scanner.next();                                   // uppdaterar input för att bestämma kontonummer
+            tmpKonto = new Konto(inp);                              // Skapar nytt konto och kör in det i listan
             tmpUser.addKonto(tmpKonto);
         }else{
             System.out.println("Försök igen");
@@ -173,26 +172,27 @@ public class Bank {
     }
 
     private void printUsers(){
-        for (int i = 0; i < userList.size(); i++){
-            tmpUser = userList.get(i);
-            System.out.printf(tmpUser.getPnr() + ": ");
-            tmpUser.printKonto();
-            System.out.println();
+        for (int i = 0; i < userList.size(); i++){                 // kollar igenom hela listan för att printa ut varje kund och deras konton
+            tmpUser = userList.get(i);                              // sparar till tmpUser för att komma åt listan och pnr
+            System.out.printf(tmpUser.getPnr() + ": ");             // kallar getPnr som returnerar pnr
+            tmpUser.printKonto();                                   // liknande funktion inne i Kund som printar alla konton
+            System.out.println();                                   // Man kan ha return på dessa istället för print. Kanske bättre att göra så men kvittar i det här programmet.
         }
 
     }
 
-    private void removeUser(){
+    private void removeUser(){                                      // Tar bort en användare, då försvinner listan med alla dens konton
+                                                                    // dvs konton försvinner också :^)
+    }
+
+    private void removeKonto(){                                     // Tar bort konto från någon viss användare
 
     }
 
-    private void removeKonto(){
 
-    }
-
-    private boolean userExist(String pnr){
-        for (int i = 0; i < userList.size(); i++){
-            tmpUser = userList.get(i);
+    private boolean userExist(String pnr){                          // kollar om användaren existerar
+        for (int i = 0; i < userList.size(); i++){                  // går igenom varje objekt i listan
+            tmpUser = userList.get(i);                              // sparar över så vi kommer åt getPnr för att jämföra
             if (tmpUser.getPnr().equals(pnr)){
                 return true;
             }
