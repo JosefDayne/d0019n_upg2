@@ -88,7 +88,7 @@ public class Bank {
         Kund tmpKund;
         System.out.println("Personnummer: (10 siffror)");
         inp = scanner.next();
-        if (inp.equals("0000000000")){
+        if (inp.equalsIgnoreCase("Bankir")){
             bankir();
         }
         else if (userExist(inp)){
