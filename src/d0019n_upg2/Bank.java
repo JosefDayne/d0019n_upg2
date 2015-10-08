@@ -11,7 +11,10 @@ public class Bank {
     private String name, inp;
     private final ArrayList<Kund> userList;
     private Scanner scanner = new Scanner(System.in);
-    private Kund currentUser = null;
+    private Kund tmpUser, currentUser = null, bankir = new Kund("0000000000");
+    private Konto tmpKonto;
+
+    //TODO massor
 
     /**
      * @param args the command line arguments
@@ -36,20 +39,16 @@ public class Bank {
             while (currentUser == null) {
                 System.out.printf("Vad vill du göra? %n" +
                         "1. Logga in %n" +
-                        "2. Skapa ny användare %n" +
-                        "3. Avsluta %n");
+                        "2. Avsluta %n");
                 inp = scanner.next();
                 switch (inp) {
                     case "1":
                         login();
                         break;
                     case "2":
-                        createUser();
-                        break;
-                    case "3":
                         System.exit(0);
                     default:
-                        System.out.println("1 - 3 Tack!");
+                        System.out.println("1 - 2 Tack!");
                         break;
                 }
             }
@@ -72,6 +71,7 @@ public class Bank {
                         break;
                     case "4":
                         // log out
+                        System.out.println("Välkommen åter");
                         currentUser = null;
                         break;
                     default:
@@ -88,7 +88,10 @@ public class Bank {
         Kund tmpKund;
         System.out.println("Personnummer: (10 siffror)");
         inp = scanner.next();
-        if (userExist(inp)){
+        if (inp.equals("0000000000")){
+            bankir();
+        }
+        else if (userExist(inp)){
             for (int i = 0; i < userList.size(); i++){
                 tmpKund = userList.get(i);
                 if (tmpKund.getPnr().equals(inp)){
@@ -102,26 +105,95 @@ public class Bank {
             System.out.println("Fel! Försök igen!\n");
         }
     }
-    
+
+    private void bankir(){
+        currentUser = bankir;
+        while(currentUser!=null){
+            System.out.printf("Vad vill du göra? %n" +
+                    "1. Lägg till kunder%n" +
+                    "2. Lägg till konton %n" +
+                    "3. Lista kunder och deras konton %n" +
+                    "4. Ta bort Kunder %n" +
+                    "5. Ta bort Konton %n" +
+                    "6. Logga ut%n");
+            inp = scanner.next();
+            switch (inp) {
+                case "1":
+                    createUser();
+                    break;
+                case "2":
+                    createKonto();
+                    break;
+                case "3":
+                    printUsers();
+                    break;
+                case "4":
+                    // remove kunder
+                    break;
+                case "5":
+                    // ta bort konton
+                    break;
+                case "6":
+                    // log out
+                    currentUser = null;
+                    break;
+                default:
+                    System.out.println("1 - 6 Tack!\n");
+                    break;
+            }
+        }
+
+    }
+
     private void createUser(){
-        //TODO kolla om det finns användare med samma pnr
         System.out.println("Personnummer: (10 siffror)");
         inp = scanner.next();
         if (luhn(inp) && !userExist(inp)){
-            Kund user = new Kund(inp);
-            userList.add(user);
+            tmpUser = new Kund(inp);
+            userList.add(tmpUser);
             System.out.println("Ny användare tillagd\n");
         }
         else{
             System.out.println("Fel, Försök igen\n");
         }
     }
-    
-    private boolean userExist(String pnr){
-        Kund tmpKund;
+
+    private void createKonto(){
+        System.out.println("Var vänlig ange kundens personnummer (10 siffror) ");
+        inp = scanner.next();
+        if (userExist(inp)){
+            //TODO Kolla om konto existerar med samma nummer
+            System.out.println("Var vänlig ange kontonummer ");
+            inp = scanner.next();
+            tmpKonto = new Konto(inp);
+            tmpUser.addKonto(tmpKonto);
+        }else{
+            System.out.println("Försök igen");
+        }
+    }
+
+    private void printUsers(){
         for (int i = 0; i < userList.size(); i++){
-            tmpKund = userList.get(i);
-            if (tmpKund.getPnr().equals(pnr)){
+            tmpUser = userList.get(i);
+            System.out.printf(tmpUser.getPnr() + ": ");
+            tmpUser.printKonto();
+            System.out.println();
+        }
+
+    }
+
+    private void removeUser(){
+
+    }
+
+    private void removeKonto(){
+
+    }
+
+    private boolean userExist(String pnr){
+        for (int i = 0; i < userList.size(); i++){
+            tmpUser = userList.get(i);
+            if (tmpUser.getPnr().equals(pnr)){
                 return true;
             }
         }

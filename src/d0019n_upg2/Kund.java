@@ -13,16 +13,35 @@ import java.util.ArrayList;
  */
 public class Kund {
     private String pnr;
-    private final ArrayList<Kund> kontoList;
+    private final ArrayList<Konto> kontoList;
+    private Konto tmpKonto;
     
     public Kund(String pnr){
         this.pnr = pnr;
-       kontoList = new ArrayList<>();
+        kontoList = new ArrayList<>();
     }
     
     public String getPnr(){
         return this.pnr;
     }
-    
+
+    public void addKonto(Konto konto){
+        kontoList.add(konto);
+    }
+
+    public void printKonto(){
+        for (int i = 0; i < kontoList.size(); i++){
+            tmpKonto = kontoList.get(i);
+            System.out.printf(tmpKonto.getKontoNummer() + " ");
+        }
+    }
+
+    public void deposit(String konto){
+
+    }
+
+    public void withdrawal(String konto){
+
+    }
     
 }

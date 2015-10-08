@@ -10,7 +10,19 @@ package d0019n_upg2;
  * @author Filip
  */
 public class Konto {
-    private int kontoNummer;
-    private int saldo;
+    private String kontoNummer;
+    private int saldo = 0;
+
+    public Konto(String kontoNummer){
+        this.kontoNummer = kontoNummer;
+    }
+
+    public String getKontoNummer(){
+        return this.kontoNummer;
+    }
+
+    public int saldo(){
+        return this.saldo;
+    }
     
 }
