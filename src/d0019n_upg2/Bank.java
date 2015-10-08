@@ -87,11 +87,7 @@ public class Bank {
     private void login(){
         System.out.println("Personnummer: (10 siffror)");
         inp = scanner.next();
-<<<<<<< HEAD
-        if (inp.equals("bankir")){      // bankir som pnr = login som bankir, inget pw (säker bank)
-=======
-        if (inp.equalsIgnoreCase("Bankir")){
->>>>>>> origin/master
+        if (inp.equalsIgnoreCase("Bankir")){    // bankir som pnr = login som bankir, inget pw (säker bank)
             bankir();
         }
         else if (userExist(inp)){       // Om det inte är bakir kollar den ifall det finns någon kund/användare med det personnumret
