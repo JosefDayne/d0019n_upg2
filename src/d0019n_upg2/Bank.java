@@ -92,7 +92,6 @@ public class Bank {
             bankir();
         }
         else if (userExist(inp)){
-        if (userExist(inp)){  // Vad händer här?
             for (int i = 0; i < userList.size(); i++){
                 tmpKund = userList.get(i);
                 if (tmpKund.getPnr().equals(inp)){
