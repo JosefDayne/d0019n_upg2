@@ -32,16 +32,26 @@ public class Kund {
     public void printKonto(){
         for (int i = 0; i < kontoList.size(); i++){
             tmpKonto = kontoList.get(i);
-            System.out.printf(tmpKonto.getKontoNummer() + " ");
+            System.out.printf(tmpKonto.getKontoNummer() + " Saldo: " + tmpKonto.getSaldo() + " ");
         }
     }
 
-    public void deposit(String konto){
-
+    public void removeKonto(String kontoNmr){
+        for (int i = 0; i < kontoList.size(); i++){
+            tmpKonto = kontoList.get(i);
+            if (tmpKonto.getKontoNummer().equals(kontoNmr)){
+                kontoList.remove(tmpKonto);
+                System.out.println(tmpKonto.getKontoNummer() + " Borttaget");
+            }
+        }
     }
 
-    public void withdrawal(String konto){
+    public void deposit(String kontoNmr, int tjugo){
+        //TODO Bra om de gör något
+    }
 
+    public void withdrawal(String kontoNmr, int tjugo){
+        //TODO Bra om de gör något
     }
     
 }

@@ -9,14 +9,15 @@ import java.util.Scanner;
  */
 public class Bank {
     private String name, inp;                                      // name = namn på banken (onödigt), inp = variabel för input från användaren
+    private int inpInt;
     private final ArrayList<Kund> userList;
     private Scanner scanner = new Scanner(System.in);              // input från användaren
-    private Kund tmpUser, currentUser = null, bankir = new Kund("0000000000");      // temp (läs under), currentUser är inloggade användaren
+    private Kund tmpUser, currentUser = null, bankir = new Kund("0");      // temp (läs under), currentUser är inloggade användaren
     private Konto tmpKonto;                 // temp för att komma åt rätt konto från listan
 
     //TODO massor
 
-    /**
+    /**å
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -61,13 +62,14 @@ public class Bank {
                 inp = scanner.next();           // uppdaterar input
                 switch (inp) {
                     case "1":
-                        // lista konton
+                        currentUser.printKonto();
+                        System.out.println();
                         break;
                     case "2":
-                        // insättning
+                        something(1);
                         break;
                     case "3":
-                        // uttag
+                        something(2);
                         break;
                     case "4":
                         // log out
@@ -80,6 +82,18 @@ public class Bank {
                 }
 
             }
+        }
+    }
+
+    private void something(int someRandomInteger) {
+        System.out.println("Ange kontonummer ");
+        inp = scanner.next();
+        System.out.println("Ange belopp");
+        inpInt = scanner.nextInt();
+        if (someRandomInteger == 1){
+            currentUser.withdrawal(inp, inpInt);
+        }else{
+            currentUser.deposit(inp, inpInt);
         }
     }
         
@@ -127,10 +141,10 @@ public class Bank {
                     printUsers();
                     break;
                 case "4":
-                    // remove kunder
+                    removeUser();
                     break;
                 case "5":
-                    // ta bort konton
+                    removeKonto();
                     break;
                 case "6":
                     // log out
@@ -165,7 +179,7 @@ public class Bank {
             System.out.println("Var vänlig ange kontonummer ");
             inp = scanner.next();                                   // uppdaterar input för att bestämma kontonummer
             tmpKonto = new Konto(inp);                              // Skapar nytt konto och kör in det i listan
-            tmpUser.addKonto(tmpKonto);
+            tmpUser.addKonto(tmpKonto);                             // Vi vet att tmpUser är rätt pga userExist()
         }else{
             System.out.println("Försök igen");
         }
@@ -182,11 +196,21 @@ public class Bank {
     }
 
     private void removeUser(){                                      // Tar bort en användare, då försvinner listan med alla dens konton
-                                                                    // dvs konton försvinner också :^)
+        System.out.println("Ange personnummer (10 siffror)");
+        inp = scanner.next();
+        if (userExist(inp)) {
+            userList.remove(tmpUser);
+        }
     }
 
-    private void removeKonto(){                                     // Tar bort konto från någon viss användare
-
+    private void removeKonto(){             // Tar bort konto från någon viss användare
+        System.out.println("Ange personnummer (10 siffror)");
+        inp = scanner.next();
+        if (userExist(inp)){
+            System.out.println("Ange kontonummer ");
+            inp = scanner.next();
+            tmpUser.removeKonto(inp);
+        }
     }
 
 

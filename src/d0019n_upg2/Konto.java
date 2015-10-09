@@ -21,7 +21,7 @@ public class Konto {
         return this.kontoNummer;
     }
 
-    public int saldo(){
+    public int getSaldo(){
         return this.saldo;
     }
     
