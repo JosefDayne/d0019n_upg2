@@ -15,24 +15,29 @@ public class Bank {
     private Kund tmpUser, currentUser = null, bankir = new Kund("0");      // temp (läs under), currentUser är inloggade användaren
     private Konto tmpKonto;                 // temp för att komma åt rätt konto från listan
 
-    //TODO massor
+    //TODO lite mindre
 
-    /**å
+    /**
+     * Start of the program, creates new Bank and starts the main loop
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         Bank bank = new Bank("Nordbanken");
         bank.start();
-        //testfunktioner
-        //bank.createUser();
-        //bank.createUser();
     }
 
+    /**
+     * Constructor
+     * @param name Name of the bank
+     */
     public Bank(String name){               // konstruktor
         this.name = name;
         userList = new ArrayList<>();
     }
-    
+
+    /**
+     * Start the main loop of the application
+     */
     private void start(){
         System.out.println("Välkommen till " + name);
 
@@ -85,19 +90,28 @@ public class Bank {
         }
     }
 
+    /**
+     * Handle deposits and withdrawals
+     * @param someRandomInteger 1 for withdrawal, 2 for deposit
+     */
     private void something(int someRandomInteger) {
         System.out.println("Ange kontonummer ");
         inp = scanner.next();
         System.out.println("Ange belopp");
         inpInt = scanner.nextInt();
-        if (someRandomInteger == 1){
-            currentUser.withdrawal(inp, inpInt);
-        }else{
-            currentUser.deposit(inp, inpInt);
+        if (currentUser.kontoExist(inp)){
+            if (someRandomInteger == 1){
+                currentUser.deposit(inp, inpInt);
+            }else{
+                currentUser.withdrawal(inp, inpInt);
+            }
         }
-    }
-        
 
+    }
+
+    /**
+     * Try to log in as user
+     */
     private void login(){
         System.out.println("Personnummer: (10 siffror)");
         inp = scanner.next();
@@ -119,6 +133,9 @@ public class Bank {
         }
     }
 
+    /**
+     * Loop for logged in banker
+     */
     private void bankir(){
         currentUser = bankir;
         while(currentUser!=null){                   // inga konstigheter? Samma som förut
@@ -158,6 +175,9 @@ public class Bank {
 
     }
 
+    /**
+     * Create a new Kund
+     */
     private void createUser(){
         System.out.println("Personnummer: (10 siffror)");
         inp = scanner.next();                           // uppdaterar input
@@ -171,20 +191,44 @@ public class Bank {
         }
     }
 
+    /**
+     * Create a new Konto for the Kund
+     */
     private void createKonto(){
         System.out.println("Var vänlig ange kundens personnummer (10 siffror) ");
         inp = scanner.next();                                       // uppdaterar input så programmet vet vilken användare som ska få nytt konto
         if (userExist(inp)){
-            //TODO Kolla om konto existerar med samma nummer        // kanske kontoExist() för att kolla(?)
             System.out.println("Var vänlig ange kontonummer ");
             inp = scanner.next();                                   // uppdaterar input för att bestämma kontonummer
-            tmpKonto = new Konto(inp);                              // Skapar nytt konto och kör in det i listan
-            tmpUser.addKonto(tmpKonto);                             // Vi vet att tmpUser är rätt pga userExist()
+            if (!anyKontoExist(inp)){
+                tmpKonto = new Konto(inp);                              // Skapar nytt konto och kör in det i listan
+                tmpUser.addKonto(tmpKonto);                             // Vi vet att tmpUser är rätt pga userExist()
+            }
+
         }else{
             System.out.println("Försök igen");
         }
     }
 
+    /**
+     * Check if Konto with knmr exists in any user
+     *
+     * @param knmr Konto kontoNumber to be checked
+     * @return true if Konto exist with same kontoNummer
+     */
+    private boolean anyKontoExist(String knmr){
+        for (int i = 0; i < userList.size(); i++){      // Loopar igenom hela userList
+            tmpUser = userList.get(i);                  // Uppdaterar tmpUser varje varv
+            if (tmpUser.kontoExist(knmr)){              // om kontot finns
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Print all the Kund and all their Konto
+     */
     private void printUsers(){
         for (int i = 0; i < userList.size(); i++){                 // kollar igenom hela listan för att printa ut varje kund och deras konton
             tmpUser = userList.get(i);                              // sparar till tmpUser för att komma åt listan och pnr
@@ -195,6 +239,9 @@ public class Bank {
 
     }
 
+    /**
+     * Remove a Kund
+     */
     private void removeUser(){                                      // Tar bort en användare, då försvinner listan med alla dens konton
         System.out.println("Ange personnummer (10 siffror)");
         inp = scanner.next();
@@ -203,6 +250,9 @@ public class Bank {
         }
     }
 
+    /**
+     * Remove a Konto
+     */
     private void removeKonto(){             // Tar bort konto från någon viss användare
         System.out.println("Ange personnummer (10 siffror)");
         inp = scanner.next();
@@ -213,7 +263,11 @@ public class Bank {
         }
     }
 
-
+    /**
+     * Checks if Kund exists with same pnr. Also change tmpUser to it
+     * @param pnr pnr of Kund
+     * @return true if that Kund exist, false if that Kund does not exist
+     */
     private boolean userExist(String pnr){                          // kollar om användaren existerar
         for (int i = 0; i < userList.size(); i++){                  // går igenom varje objekt i listan
             tmpUser = userList.get(i);                              // sparar över så vi kommer åt getPnr för att jämföra
@@ -223,7 +277,12 @@ public class Bank {
         }
         return false;
     }
-    
+
+    /**
+     * Validate pnr with Luhn
+     * @param pnr pnr to be used for Kund
+     * @return true if correct, false if not correct
+     */
     private boolean luhn(String pnr){
         ArrayList<Integer> pnrList = new ArrayList<>();     // Stores numbers for Luhn
         int ctrlNum = Character.getNumericValue(pnr.charAt(9));        // Control number
