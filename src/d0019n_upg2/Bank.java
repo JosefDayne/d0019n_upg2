@@ -196,10 +196,10 @@ public class Bank {
      * Create a new Konto for the Kund
      */
     private void createKonto(){
-        System.out.println("Var vänlig ange kundens personnummer (10 siffror) ");
+        System.out.println("Var vänlig ange kundens personnummer (10 siffror)");
         inp = scanner.next();                                       // uppdaterar input så programmet vet vilken användare som ska få nytt konto
         if (userExist(inp)){
-            System.out.println("Var vänlig ange kontonummer ");
+            System.out.println("Var vänlig ange kontonummer");
             inp = scanner.next();                                   // uppdaterar input för att bestämma kontonummer
             //TODO Felhantering som kollar att det bara är siffror
             if (!anyKontoExist(inp)){
