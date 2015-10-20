@@ -15,8 +15,6 @@ public class Bank {
     private Kund tmpUser, currentUser = null, bankir = new Kund("0");      // temp (läs under), currentUser är inloggade användaren
     private Konto tmpKonto;                 // temp för att komma åt rätt konto från listan
 
-    //TODO Felhantering, ev. optimering.
-
     /**
      * Start of the program, creates new Bank and starts the main loop
      * @param args the command line arguments
@@ -181,7 +179,6 @@ public class Bank {
     private void createUser(){
         System.out.println("Personnummer: (10 siffror)");
         inp = scanner.next();                           // uppdaterar input
-        //TODO Felhantering här som kollar så det är 10 siffror, inte mer eller mindre samt inga bokstäver.
         if (luhn(inp) && !userExist(inp)){              // om luhn är OK och det inte finns någon användare med
             tmpUser = new Kund(inp);                    // Skapar en ny Kund med personnumret och
             userList.add(tmpUser);                      // sparar den till listan
@@ -201,7 +198,6 @@ public class Bank {
         if (userExist(inp)){
             System.out.println("Var vänlig ange kontonummer");
             inp = scanner.next();                                   // uppdaterar input för att bestämma kontonummer
-            //TODO Felhantering som kollar att det bara är siffror
             if (!anyKontoExist(inp)){
                 tmpKonto = new Konto(inp);                              // Skapar nytt konto och kör in det i listan
                 tmpUser.addKonto(tmpKonto);                             // Vi vet att tmpUser är rätt pga userExist()
